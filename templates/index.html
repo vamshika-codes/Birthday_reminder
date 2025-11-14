@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <h1>🎂 Celebrate Every Birthday</h1>
+    <p>Keep track of all your friends' special days</p>
+</div>
+
+{% if friends %}
+<div class="content-section">
+    <div class="section-header">
+        <h2>Upcoming Celebrations</h2>
+        <span class="badge">{{ friends|length }} Friends</span>
+    </div>
+
+    <div class="birthday-grid">
+        {% for f in friends %}
+        <div class="birthday-card">
+            <div class="card-header">
+                <div class="avatar">{{ f.name[0].upper() }}</div>
+                <div class="card-title-group">
+                    <h3>{{ f.name }}</h3>
+                    <p class="date-display">📅 {{ f.birthday }}</p>
+                </div>
+            </div>
+
+            {% if f.note %}
+            <div class="card-note">
+                <i class="fas fa-sticky-note"></i>
+                <p>{{ f.note }}</p>
+            </div>
+            {% endif %}
+
+            <div class="card-actions">
+                <a href="{{ url_for('edit', id=f.id) }}" class="btn btn-edit">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a href="{{ url_for('delete', id=f.id) }}" class="btn btn-delete" onclick="return confirm('Are you sure?')">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">
+        <i class="fas fa-calendar-alt"></i>
+    </div>
+    <h2>No Birthdays Yet</h2>
+    <p>Start by adding your first friend's birthday</p>
+    <a href="{{ url_for('add') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add First Birthday
+    </a>
+</div>
+{% endif %}
+{% endblock %}
